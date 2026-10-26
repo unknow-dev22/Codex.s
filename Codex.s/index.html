@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Aureus</title>
+    <link rel="stylesheet" href="src/styles/main.css">
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">A</div>
+                <div class="logo-text">AUREUS<span>.</span></div>
+            </div>
+            <nav class="nav">
+                <button class="active" onclick="navigate('home',this)">◈ <span>Accueil</span></button>
+                <button onclick="navigate('portfolio',this)">◉ <span>Portefeuille</span></button>
+                <button onclick="navigate('markets',this)">↗ <span>Marchés</span></button>
+                <button onclick="navigate('activity',this)">▤ <span>Activité</span></button>
+                <button onclick="navigate('watchlist',this)">★ <span>Watchlist</span></button>
+                <button onclick="navigate('analytics',this)">▓ <span>Analytics</span></button>
+                <button onclick="navigate('news',this)">◎ <span>Actualités</span></button>
+                <button onclick="navigate('settings',this)">⚙ <span>Paramètres</span></button>
+            </nav>
+            <div class="version">AUREUS • 2.0</div>
+        </aside>
+
+        <main class="main">
+            <section id="home" class="page active">
+                <div class="topbar">
+                    <div>
+                        <h1>Bonjour 👋</h1>
+                        <p>Votre espace financier</p>
+                    </div>
+                    <div class="user">JC</div>
+                </div>
+
+                <div class="grid">
+                    <div class="card balance-card">
+                        <div class="label">Solde disponible</div>
+                        <div class="balance" id="balance">40,00 €</div>
+                        <div class="stats">
+                            <div class="stat">
+                                <span>Portefeuille</span>
+                                <strong id="portfolioValue">0,00 €</strong>
+                            </div>
+                            <div class="stat">
+                                <span>Total</span>
+                                <strong class="gold" id="totalValue">40,00 €</strong>
+                            </div>
+                            <div class="stat">
+                                <span>P&L</span>
+                                <strong id="pnl">0,00 €</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card bank-card">
+                        <div class="card-head">
+                            <div>
+                                <div class="label">Carte</div>
+                                <div style="color:#777;font-size:10px;margin-top:5px">AUREUS</div>
+                            </div>
+                            <div class="brand">AUREUS</div>
+                        </div>
+                        <div class="chip"></div>
+                        <div class="card-number">4944 • 4772 • 4842 • 4692</div>
+                        <div class="card-bottom">
+                            <div>TITULAIRE<br><strong>JEAN</strong></div>
+                            <div>EXP<br><strong>12/30</strong></div>
+                            <div>TYPE<br><strong>VIRTUAL</strong></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-title">
+                    <h2>Actions</h2>
+                </div>
+                <div class="actions">
+                    <button class="action" onclick="openMoney('deposit')">
+                        <strong>＋ Ajouter des fonds</strong>
+                        Alimenter le compte
+                    </button>
+                    <button class="action" onclick="openMoney('withdraw')">
+                        <strong>− Retirer des fonds</strong>
+                        Déplacer de l'argent
+                    </button>
+                </div>
+
+                <div class="section-title">
+                    <h2>Marchés</h2>
+                    <button onclick="navigate('markets')">Voir tout →</button>
+                </div>
+                <div class="assets" id="homeAssets"></div>
+            </section>
+
+            <section id="portfolio" class="page">
+                <div class="topbar">
+                    <div>
+                        <h1>Portefeuille</h1>
+                        <p>Vos positions actuelles</p>
+                    </div>
+                </div>
+                <div class="grid-3">
+                    <div class="card">
+                        <div class="label">Valeur</div>
+                        <div class="balance" style="font-size:29px" id="portTotal">0,00 €</div>
+                    </div>
+                    <div class="card">
+                        <div class="label">Investi</div>
+                        <div class="balance" style="font-size:29px" id="invested">0,00 €</div>
+                    </div>
+                    <div class="card">
+                        <div class="label">Performance</div>
+                        <div class="balance gold" style="font-size:29px" id="portPnl">0,00 €</div>
+                    </div>
+                </div>
+                <div class="section-title"><h2>Positions</h2></div>
+                <div class="card" id="positions"></div>
+            </section>
+
+            <section id="markets" class="page">
+                <div class="topbar">
+                    <div>
+                        <h1>Marchés</h1>
+                        <p>Actifs disponibles</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ACTIF</th>
+                                <th>PRIX</th>
+                                <th>24H</th>
+                                <th>VOLUME</th>
+                            </tr>
+                        </thead>
+                        <tbody id="marketTable"></tbody>
+                    </table>
+                </div>
+                <div class="section-title"><h2>Terminal</h2></div>
+                <div class="trade-grid">
+                    <div class="card">
+                        <div class="chart-head">
+                            <div>
+                                <div class="selected" id="selectedName">Aureus</div>
+                                <div style="color:#666;font-size:10px;margin-top:4px" id="selectedSymbol">AUR</div>
+                            </div>
+                            <div style="text-align:right">
+                                <div class="selected-price" id="selectedPrice">12,50 €</div>
+                                <div class="change up" id="selectedChange">+0,00 %</div>
+                            </div>
+                        </div>
+                        <canvas id="chart"></canvas>
+                    </div>
+                    <div class="card">
+                        <div class="label">Ordre</div>
+                        <div class="tabs">
+                            <button id="buyTab" class="active" onclick="setMode('buy')">Acheter</button>
+                            <button id="sellTab" onclick="setMode('sell')">Vendre</button>
+                        </div>
+                        <div class="label">Quantité</div>
+                        <input id="quantity" class="input" type="number" min="0" step="0.01" value="1" oninput="updateOrder()">
+                        <div class="info"><span>Prix</span><strong id="orderPrice">12,50 €</strong></div>
+                        <div class="info"><span>Total</span><strong id="orderTotal">12,50 €</strong></div>
+                        <div class="info"><span>Solde</span><strong id="orderBalance">40,00 €</strong></div>
+                        <button class="trade-btn" id="tradeButton" onclick="executeTrade()">Acheter</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="activity" class="page">
+                <div class="topbar">
+                    <div>
+                        <h1>Activité</h1>
+                        <p>Historique de votre compte</p>
+                    </div>
+                </div>
+                <div class="card" id="activityList"></div>
+            </section>
+
+            <section id="watchlist" class="page">
+                <div class="topbar">
+                    <div>
+                        <h1>Watchlist</h1>
+                        <p>Vos actifs favoris</p>
+                    </div>
+                    <button class="action" onclick="openAddWatchlist()" style="padding:8px 14px;font-size:12px">＋ Ajouter</button>
+                </div>
+                <div class="card" id="watchlistContainer"></div>
+            </section>
+
+            <section id="analytics" class="page">
+                <div class="topbar">
+                    <div>
+                        <h1>Analytics</h1>
+                        <p>Performance & allocation</p>
+                    </div>
+                </div>
+                <div class="grid-3">
+                    <div class="card">
+                        <div class="label">P&L Total</div>
+                        <div class="balance" style="font-size:29px" id="analyticsPnl">0,00 €</div>
+                    </div>
+                    <div class="card">
+                        <div class="label">Best Performer</div>
+                        <div class="balance" style="font-size:29px" id="bestPerformer">—</div>
+                    </div>
+                    <div class="card">
+                        <div class="label">Win Rate</div>
+                        <div class="balance" style="font-size:29px" id="winRate">0%</div>
+                    </div>
+                </div>
+                <div class="section-title"><h2>Allocation</h2></div>
+                <div class="card" id="allocationChart"></div>
+                <div class="section-title"><h2>P&L par actif</h2></div>
+                <div class="card" id="pnlChart"></div>
+                <div class="section-title"><h2>Historique P&L</h2></div>
+                <div class="card" id="pnlHistoryChart"></div>
+            </section>
+
+            <section id="news" class="page">
+                <div class="topbar">
+                    <div>
+                        <h1>Actualités</h1>
+                        <p>Dernières nouvelles du marché</p>
+                    </div>
+                </div>
+                <div class="assets" id="newsContainer"></div>
+            </section>
+
+            <section id="settings" class="page">
+                <div class="topbar">
+                    <div>
+                        <h1>Paramètres</h1>
+                        <p>Préférences & sécurité</p>
+                    </div>
+                </div>
+                <div class="grid">
+                    <div class="card">
+                        <div class="section-title"><h2>Apparence</h2></div>
+                        <div class="actions" style="grid-template-columns:1fr">
+                            <button class="action" onclick="toggleTheme()">
+                                <strong id="themeBtn">🌙 Mode sombre</strong>
+                                Basculer le thème
+                            </button>
+                            <button class="action" onclick="toggleCompact()">
+                                <strong id="compactBtn">📦 Compact</strong>
+                                Densité d'affichage
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="section-title"><h2>Données & Compte</h2></div>
+                        <div class="actions" style="grid-template-columns:1fr">
+                            <button class="action" onclick="exportData()">
+                                <strong>📤 Exporter</strong>
+                                Sauvegarder vos données
+                            </button>
+                            <button class="action" onclick="importData()">
+                                <strong>📥 Importer</strong>
+                                Restaurer une sauvegarde
+                            </button>
+                            <button class="action" onclick="resetData()" style="border-color:var(--red);color:var(--red)">
+                                <strong>🗑️ Réinitialiser</strong>
+                                Effacer tout l'historique
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="section-title"><h2>Notifications</h2></div>
+                    <label style="display:flex;align-items:center;gap:10px;cursor:pointer">
+                        <input type="checkbox" id="notifPrice" checked onchange="saveSettings()">
+                        <span>Alertes de prix</span>
+                    </label>
+                    <label style="display:flex;align-items:center;gap:10px;margin-top:10px;cursor:pointer">
+                        <input type="checkbox" id="notifNews" onchange="saveSettings()">
+                        <span>Actualités marché</span>
+                    </label>
+                    <label style="display:flex;align-items:center;gap:10px;margin-top:10px;cursor:pointer">
+                        <input type="checkbox" id="notifTrades" checked onchange="saveSettings()">
+                        <span>Confirmations d'ordres</span>
+                    </label>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <nav class="mobile-nav">
+        <button class="active" onclick="navigate('home',this)">◈<br>Accueil</button>
+        <button onclick="navigate('portfolio',this)">◉<br>Portefeuille</button>
+        <button onclick="navigate('markets',this)">↗<br>Marchés</button>
+        <button onclick="navigate('activity',this)">▤<br>Activité</button>
+        <button onclick="navigate('watchlist',this)">★<br>Watchlist</button>
+        <button onclick="navigate('analytics',this)">▓<br>Analytics</button>
+        <button onclick="navigate('news',this)">◎<br>News</button>
+        <button onclick="navigate('settings',this)">⚙<br>Réglages</button>
+    </nav>
+
+    <div class="modal" id="moneyModal">
+        <div class="modal-box">
+            <h2 id="modalTitle">Ajouter des fonds</h2>
+            <p id="modalText">Choisissez le montant.</p>
+            <input class="input" id="moneyAmount" type="number" min="0.01" step="0.01" placeholder="0,00">
+            <div class="modal-buttons">
+                <button class="cancel" onclick="closeMoney()">Annuler</button>
+                <button class="confirm" onclick="confirmMoney()">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="watchlistModal">
+        <div class="modal-box">
+            <h2>Ajouter à la watchlist</h2>
+            <p>Sélectionnez un actif à suivre</p>
+            <select class="input" id="watchlistSelect" style="color:#fff"></select>
+            <div class="modal-buttons">
+                <button class="cancel" onclick="closeWatchlistModal()">Annuler</button>
+                <button class="confirm" onclick="confirmWatchlist()">Ajouter</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="src/scripts/app.js"></script>
+</body>
+</html>
